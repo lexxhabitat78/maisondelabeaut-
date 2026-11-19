@@ -57,7 +57,7 @@
       margin: 0 auto;
     }
 
-    /* Header */
+    /* En-tête */
     header {
       position: sticky;
       top: 0;
@@ -121,7 +121,7 @@
       font-weight: 500;
       text-decoration: none;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
     }
 
     .btn-primary {
@@ -154,7 +154,7 @@
       font-size: 0.8rem;
     }
 
-    /* Hero */
+    /* Section principale */
     .hero {
       padding: 64px 0 52px;
       border-bottom: 1px solid var(--border);
@@ -266,12 +266,6 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 14px;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .service-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
     }
 
     .service-card.selected {
@@ -335,7 +329,6 @@
       gap: 8px;
       cursor: pointer;
       font-size: 0.9rem;
-      transition: all 0.2s ease;
     }
 
     .extra-pill.selected {
@@ -392,238 +385,3 @@
       background: var(--bg);
       color: var(--ink);
       font-family: inherit;
-      font-size: 0.92rem;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      outline: none;
-      border-color: var(--gold-dark);
-      background: #FFFFFF;
-    }
-
-    .slots-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
-      gap: 8px;
-    }
-
-    .slot-btn {
-      padding: 9px 6px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--ink);
-      font-family: inherit;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .slot-btn.active {
-      background: var(--ink);
-      color: #FFFFFF;
-      border-color: var(--ink);
-    }
-
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 8px 0;
-      font-size: 0.92rem;
-      border-bottom: 1px dashed var(--border);
-    }
-
-    .summary-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding-top: 14px;
-      margin-top: 8px;
-      font-weight: 600;
-      font-size: 1.05rem;
-    }
-
-    .summary-total .amount {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.7rem;
-      color: var(--gold-dark);
-    }
-
-    .confirm-box {
-      margin-top: 18px;
-      padding: 18px;
-      border-radius: 12px;
-      background: var(--ok-bg);
-      border: 1px solid #B8DEC8;
-      color: var(--ink);
-      display: none;
-    }
-
-    .confirm-box.visible {
-      display: block;
-    }
-
-    .confirm-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    /* Accès équipe */
-    .staff-section {
-      padding: 56px 0 64px;
-      background: var(--surface-soft);
-    }
-
-    .staff-panel {
-      margin-top: 24px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 26px;
-      box-shadow: var(--shadow);
-      display: none;
-    }
-
-    .staff-panel.open {
-      display: block;
-    }
-
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .stat-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-    }
-
-    .stat-num {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.8rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .stat-lbl {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 12px 10px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    th {
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .badge-pending {
-      background: var(--warn-bg);
-      color: var(--warn);
-    }
-
-    .badge-confirmed {
-      background: var(--ok-bg);
-      color: var(--ok);
-    }
-
-    .badge-cancelled {
-      background: var(--danger-bg);
-      color: var(--danger);
-    }
-
-    .live-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 0.8rem;
-      color: var(--ok);
-      font-weight: 600;
-    }
-
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--ok);
-    }
-
-    /* Footer */
-    footer {
-      background: var(--ink);
-      color: #EAE3DA;
-      padding: 36px 0;
-      font-size: 0.88rem;
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    footer a {
-      color: var(--gold-light);
-      text-decoration: none;
-    }
-
-    @media (max-width: 820px) {
-      .hero-grid,
-      .booking-grid,
-      .form-row-2 {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding: 40px 0 36px;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- En-tête -->
-  <header>
-    <div class="container header-inner">
-      <a href="#top" class="brand">
-        <svg class="brand-lotus" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M60 16C52 30 48 48 53 72C57 54 60 36 60 16Z" stroke="#A67E42" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M60 16C68 30 72 48 67 72C63 54 60 36 60 16Z" stroke="#A67E42" stroke-width="3" stroke-linejoin="round"/>
-          <path d="M34 32C27 46 31 63 49 75C41 
