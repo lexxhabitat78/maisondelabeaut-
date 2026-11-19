@@ -52,7 +52,7 @@
       letter-spacing: -0.01em;
     }
 
-    /* Splash screen avec glissement vers le bas */
+    /* Splash screen avec glissement automatique vers le bas */
     #splash {
       position: fixed;
       inset: 0;
@@ -63,25 +63,35 @@
       align-items: center;
       justify-content: center;
       gap: 14px;
-      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+      animation: splashSlideDown 0.65s cubic-bezier(0.22, 1, 0.36, 1) 1.5s forwards;
     }
 
-    #splash.slide-down {
-      transform: translateY(100%);
-      opacity: 0.95;
-      pointer-events: none;
+    #splash.done {
+      display: none;
+    }
+
+    @keyframes splashSlideDown {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+      }
     }
 
     .splash-lotus {
       width: 92px;
       height: 76px;
-      animation: lotusPop 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation: lotusPop 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     .splash-title {
       font-size: 2rem;
       color: var(--ink);
-      animation: fadeUp 0.8s ease 0.12s both;
+      animation: fadeUp 0.75s ease 0.1s both;
     }
 
     @keyframes lotusPop {
@@ -679,7 +689,7 @@
 </head>
 <body>
 
-  <!-- Écran d'ouverture court avec glissement vers le bas -->
+  <!-- Écran d'ouverture avec glissement automatique vers le bas -->
   <div id="splash" aria-hidden="true">
     <svg class="splash-lotus" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -731,4 +741,239 @@
         <div>
           <h1>L'élégance du geste, <em>au naturel</em>.</h1>
           <p class="hero-lead">
-            Votre
+            Votre espace onglerie dédié aux poses soignées, gainages et remplissages dans une ambiance calme et raffinée.
+          </p>
+          <div class="hero-cta">
+            <a href="#reservation" class="btn btn-gold">Réserver un créneau</a>
+            <a href="#tarifs" class="btn btn-outline">Voir les tarifs</a>
+          </div>
+        </div>
+
+        <aside class="info-card">
+          <div class="info-row">
+            <div class="info-label">Horaires d'ouverture</div>
+            <div class="info-value">Tous les jours de <strong>10h00 à 19h00</strong></div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Adresse</div>
+            <div class="info-value">
+              Centre Commercial Les Quatre Tuiles<br />
+              95370 Montigny-lès-Cormeilles <em>(en face d'Yves Rocher)</em>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Téléphone &amp; RDV</div>
+            <div class="info-value"><a href="tel:0766475231">07 66 47 52 31</a></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Grille tarifaire -->
+    <section id="tarifs" class="block">
+      <div class="container">
+        <div class="section-head">
+          <h2>Grille tarifaire</h2>
+          <p>Cliquez sur une prestation et vos suppléments pour les ajouter directement à votre réservation.</p>
+        </div>
+
+        <div class="pricing-grid" id="servicesGrid"></div>
+
+        <div class="extras-box">
+          <h3 class="extras-title serif">Suppléments</h3>
+          <div class="extras-list" id="extrasList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Réservation -->
+    <section id="reservation" class="block">
+      <div class="container">
+        <div class="section-head">
+          <h2>Prendre rendez-vous</h2>
+          <p>Renseignez vos coordonnées, choisissez votre horaire entre 10h et 19h et validez votre demande.</p>
+        </div>
+
+        <div class="booking-grid">
+          <form id="bookingForm" class="form-card">
+            <div class="form-row-2">
+              <div class="field">
+                <label for="firstName">Prénom *</label>
+                <input type="text" id="firstName" name="firstName" required placeholder="Ex. Camille" />
+              </div>
+              <div class="field">
+                <label for="lastName">Nom *</label>
+                <input type="text" id="lastName" name="lastName" required placeholder="Ex. Laurent" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="phone">Numéro de téléphone *</label>
+              <input type="tel" id="phone" name="phone" required placeholder="06 00 00 00 00" />
+            </div>
+
+            <div class="form-row-2">
+              <div class="field">
+                <label for="bookingDate">Date *</label>
+                <input type="date" id="bookingDate" name="bookingDate" required />
+              </div>
+              <div class="field">
+                <label for="serviceSelect">Prestation principale *</label>
+                <select id="serviceSelect" name="serviceSelect"></select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Horaire (10h00 – 19h00) *</label>
+              <div class="slots-grid" id="slotsGrid"></div>
+            </div>
+
+            <div class="field">
+              <label for="notes">Précisions / Nail art / Devis (optionnel)</label>
+              <textarea id="notes" name="notes" rows="2" placeholder="Forme souhaitée, inspiration nail art ou précision pour devis..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+              Confirmer la demande de rendez-vous
+            </button>
+
+            <div id="confirmBox" class="confirm-box" role="status" aria-live="polite">
+              <strong>Demande enregistrée</strong>
+              <p id="confirmText" style="margin-top: 6px; font-size: 0.9rem;"></p>
+              <div class="confirm-actions">
+                <a id="whatsappNotifyLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">
+                  Envoyer sur WhatsApp (07 66 47 52 31)
+                </a>
+                <button type="button" id="copySummaryBtn" class="btn btn-outline btn-sm">
+                  Copier le récapitulatif
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <aside class="info-card">
+            <h3 class="serif" style="font-size: 1.5rem; margin-bottom: 12px;">Votre sélection</h3>
+            <div id="summaryItems"></div>
+            <div class="summary-total">
+              <span>Estimation totale</span>
+              <span class="amount" id="summaryTotal">30 €</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--muted); margin-top: 12px;">
+              Les prestations « sur devis » (dépose + nouvelle pose, nail art) sont précisées au salon avant la pose.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Accès équipe instantané -->
+  <section id="equipe" class="staff-section">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+        <div>
+          <h2 class="serif" style="font-size: 1.8rem;">Accès équipe</h2>
+          <p style="font-size: 0.88rem; color: var(--muted);">
+            Consultation instantanée des rendez-vous (prénom, nom, téléphone, prestation, horaire).
+          </p>
+        </div>
+        <button type="button" id="toggleStaffBtn" class="btn btn-outline btn-sm">
+          Ouvrir l'espace équipe
+        </button>
+      </div>
+
+      <div id="staffPanel" class="staff-panel">
+        <div id="staffLoginView">
+          <p style="font-size: 0.9rem; margin-bottom: 12px;">
+            Entrez le code d'accès de l'équipe :
+          </p>
+          <div style="display: flex; gap: 10px; max-width: 340px;">
+            <input type="password" id="staffCodeInput" placeholder="Code équipe"
+              style="flex: 1; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--border);" />
+            <button type="button" id="staffLoginBtn" class="btn btn-primary btn-sm">Valider</button>
+          </div>
+          <p id="staffError" style="color: var(--danger); font-size: 0.82rem; margin-top: 8px; display: none;">
+            Code incorrect.
+          </p>
+        </div>
+
+        <div id="staffDashboardView" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px;">
+            <span class="live-indicator">
+              <span class="live-dot"></span>
+              Mise à jour instantanée active
+            </span>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" id="refreshStaffBtn" class="btn btn-outline btn-sm">Actualiser</button>
+              <button type="button" id="staffLockBtn" class="btn btn-outline btn-sm">Verrouiller</button>
+            </div>
+          </div>
+
+          <div class="stats-bar">
+            <div class="stat-card">
+              <div class="stat-num" id="statCount">0</div>
+              <div class="stat-lbl">Rendez-vous enregistrés</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="statConfirmed">0</div>
+              <div class="stat-lbl">Confirmés</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-num" id="statRevenue">0 €</div>
+              <div class="stat-lbl">Total estimé</div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Téléphone</th>
+                  <th>Date &amp; Heure</th>
+                  <th>Prestations</th>
+                  <th>Tarif</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pied de page -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong class="serif" style="font-size: 1.25rem; color: #FFFFFF;">Maison de la Beauté</strong><br />
+        <span>Centre Commercial Les Quatre Tuiles, 95370 Montigny-lès-Cormeilles (en face d'Yves Rocher) • 10h – 19h</span>
+      </div>
+      <div>
+        <a href="tel:0766475231">07 66 47 52 31</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const SALON_WHATSAPP = '33766475231';
+    const STAFF_CODE = 'MAISON95';
+    const STORAGE_KEY = 'maison_beaute_rdv_v1';
+
+    const SERVICES = [
+      { id: 'gainage', name: 'Gainage sur ongle naturel', price: 30, duration: '1h15' },
+      { id: 'capsule-gel', name: 'Pose capsule + gel', price: 35, duration: '1h30' },
+      { id: 'capsule-gel-semi', name: 'Pose capsule + gel + semi-permanent', price: 45, duration: '1h45' },
+      { id: 'remplissage', name: 'Remplissage gel', price: 35, duration: '1h15' },
+      { id: 'semi', name: 'Vernis semi-permanent', price: 25, duration: '45 min' },
+      { id: 'depose', name: 'Dépose', price: 15, duration: '30 min' },
+      { id: 'depose-pose', name: 'Dépose + nouvelle pose', price: 0, quote: true, duration: 'Sur devis' }
+    ];
+
+    const EXTRAS = [
+      { id: 'chrome', name: 'Chrome', price: 5 },
+      { id: 'strass', name: 'Strass bijoux', price: 2 },
+      { id: 'nail-art
