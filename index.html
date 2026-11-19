@@ -1,1078 +1,388 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maison de la Beauté — Onglerie à Montigny-lès-Cormeilles</title>
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Fonts : Cormorant Garamond & Plus Jakarta Sans -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <script>
-    // Configuration de la palette éditoriale épurée et des polices
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-          },
-          colors: {
-            alabaster: '#FAF8F5',
-            linen: '#F3EFEA',
-            sand: '#EAE3DA',
-            stone: '#E6DFD5',
-            gold: {
-              300: '#D8BE8C',
-              400: '#C8A568',
-              500: '#B9935A',
-              600: '#9C7843',
-            },
-            ink: {
-              900: '#1F1B18',
-              700: '#463F3A',
-              500: '#786F68',
-            }
-          }
-        }
-      }
-    };
-  </script>
-
+  <title>Maison de la Beauté — Onglerie &amp; Réservation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #FAF8F5;
+      --surface: #FFFFFF;
+      --surface-soft: #F3EFEA;
+      --border: #E6DDD2;
+      --ink: #1F1B18;
+      --muted: #6C6259;
+      --gold-dark: #9A743B;
+      --gold: #C29B5E;
+      --gold-light: #DFC293;
+      --ok: #2E6F4E;
+      --ok-bg: #ECF6F0;
+      --warn: #8A5A16;
+      --warn-bg: #FDF5E6;
+      --danger: #992D2D;
+      --danger-bg: #FDECEC;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(31, 27, 24, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background-color: #FAF8F5;
-      color: #1F1B18;
-      overflow-x: hidden;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Animation du tracé de la fleur de lotus dorée (~1,2s) */
-    .lotus-stroke {
-      stroke-dasharray: 420;
-      stroke-dashoffset: 420;
-      animation: drawLotus 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    h1, h2, h3, .serif {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 500;
+      letter-spacing: -0.01em;
     }
 
-    @keyframes drawLotus {
+    /* Splash screen avec glissement vers le bas */
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
+    }
+
+    #splash.slide-down {
+      transform: translateY(100%);
+      opacity: 0.95;
+      pointer-events: none;
+    }
+
+    .splash-lotus {
+      width: 92px;
+      height: 76px;
+      animation: lotusPop 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .splash-title {
+      font-size: 2rem;
+      color: var(--ink);
+      animation: fadeUp 0.8s ease 0.12s both;
+    }
+
+    @keyframes lotusPop {
+      from {
+        opacity: 0;
+        transform: scale(0.86) translateY(10px);
+      }
       to {
-        stroke-dashoffset: 0;
+        opacity: 1;
+        transform: scale(1) translateY(0);
       }
     }
 
-    /* Apparition douce du nom Maison de la Beauté sur l'écran d'accueil */
-    .splash-title {
-      opacity: 0;
-      transform: translateY(8px);
-      animation: revealSplashTitle 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
-    }
-
-    @keyframes revealSplashTitle {
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* Barre de progression courte (~1,75s) */
-    .splash-progress-bar {
-      transform: scaleX(0);
-      animation: progressShort 1.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    .container {
+      width: min(1080px, 92vw);
+      margin: 0 auto;
     }
 
-    @keyframes progressShort {
-      to {
-        transform: scaleX(1);
-      }
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 248, 245, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
     }
 
-    /* Glissement fluide vers le bas pour révéler le site */
-    #splash-screen {
-      transform: translateY(0);
-      transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.65s ease, visibility 0.65s ease;
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 74px;
     }
 
-    #splash-screen.slide-down-out {
-      transform: translateY(100%);
-      opacity: 0.92;
-      visibility: hidden;
-      pointer-events: none;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
     }
 
-    /* Cartes prestations et suppléments animées */
-    .care-card {
-      background-color: #FFFFFF;
-      border: 1px solid #E6DFD5;
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-                  border-color 0.28s ease,
-                  background-color 0.28s ease,
-                  box-shadow 0.28s ease;
+    .brand-lotus {
+      width: 40px;
+      height: 34px;
+      flex-shrink: 0;
     }
 
-    .care-card:hover {
-      border-color: #B9935A;
+    .brand-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: #332C27;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-light), var(--gold));
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--ink);
+    }
+
+    .btn-outline:hover {
+      background: var(--surface-soft);
+    }
+
+    .btn-sm {
+      padding: 7px 13px;
+      font-size: 0.8rem;
+    }
+
+    /* Hero aéré */
+    .hero {
+      padding: 68px 0 56px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.9fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-dark);
+    }
+
+    .hero-lead {
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 28px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-row {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--surface-soft);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .info-value {
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .info-value a {
+      color: var(--ink);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* Sections */
+    section.block {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head {
+      margin-bottom: 32px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 3.6vw, 2.8rem);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    /* Grille tarifaire */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 16px;
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .service-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 14px 28px -12px rgba(31, 27, 24, 0.08);
+      box-shadow: var(--shadow);
     }
 
-    .care-card.is-selected {
-      background-color: #F3EFEA;
-      border-color: #B9935A;
-      box-shadow: 0 12px 26px -10px rgba(185, 147, 90, 0.2);
+    .service-card.selected {
+      border-color: var(--gold-dark);
+      background: #FFFEFC;
+      box-shadow: 0 0 0 1px var(--gold-dark), var(--shadow);
     }
 
-    /* Révélation douce au défilement */
-    .reveal-block {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    .service-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
     }
 
-    .reveal-block.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  </style>
-</head>
-<body class="font-sans antialiased selection:bg-sand selection:text-ink-900">
-
-  <!-- ===================================================================== -->
-  <!-- ÉCRAN D'OUVERTURE COURT (~1,8s) AVEC GLISSEMENT VERS LE BAS          -->
-  <!-- ===================================================================== -->
-  <div id="splash-screen" class="fixed inset-0 z-50 bg-alabaster flex flex-col items-center justify-center px-6">
-    <div class="flex flex-col items-center text-center">
-      <!-- Logo Fleur de Lotus Dorée à 5 pétales -->
-      <svg class="w-28 h-20 sm:w-36 sm:h-24 mb-5" viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="lotusGoldSplash" x1="20" y1="15" x2="200" y2="115" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#D8BE8C" />
-            <stop offset="50%" stop-color="#B9935A" />
-            <stop offset="100%" stop-color="#9C7843" />
-          </linearGradient>
-        </defs>
-        <path class="lotus-stroke" d="M110 112 C86 86 86 44 110 16 C134 44 134 86 110 112 Z" stroke="url(#lotusGoldSplash)" stroke-width="3.2" stroke-linejoin="round"/>
-        <path class="lotus-stroke" d="M110 110 L110 42" stroke="url(#lotusGoldSplash)" stroke-width="2" stroke-linecap="round"/>
-        <path class="lotus-stroke" d="M107 112 C74 102 52 72 56 36 C82 40 99 66 107 112 Z" stroke="url(#lotusGoldSplash)" stroke-width="3.2" stroke-linejoin="round"/>
-        <path class="lotus-stroke" d="M113 112 C146 102 168 72 164 36 C138 40 121 66 113 112 Z" stroke="url(#lotusGoldSplash)" stroke-width="3.2" stroke-linejoin="round"/>
-        <path class="lotus-stroke" d="M104 113 C64 120 28 106 14 78 C42 66 76 78 104 113 Z" stroke="url(#lotusGoldSplash)" stroke-width="3.2" stroke-linejoin="round"/>
-        <path class="lotus-stroke" d="M116 113 C156 120 192 106 206 78 C178 66 144 78 116 113 Z" stroke="url(#lotusGoldSplash)" stroke-width="3.2" stroke-linejoin="round"/>
-      </svg>
-
-      <div class="splash-title space-y-1.5">
-        <p class="font-serif text-3xl sm:text-5xl font-medium tracking-[0.14em] uppercase text-ink-900">
-          Maison de la Beauté
-        </p>
-        <p class="text-[11px] uppercase tracking-[0.28em] text-gold-600 font-medium">
-          Onglerie • Montigny-lès-Cormeilles
-        </p>
-      </div>
-
-      <div class="w-36 h-[1.5px] bg-stone mt-7 overflow-hidden rounded-full">
-        <div class="w-full h-full bg-gold-500 origin-left splash-progress-bar"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- EN-TÊTE ÉPURÉ                                                        -->
-  <!-- ===================================================================== -->
-  <header class="sticky top-0 z-40 bg-alabaster/95 backdrop-blur-md border-b border-stone/80">
-    <div class="max-w-4xl mx-auto px-5 sm:px-8 h-24 flex items-center justify-between gap-4">
-      <a href="#" class="flex items-center gap-3.5 group min-w-0">
-        <!-- Logo Fleur de Lotus Dorée -->
-        <svg class="w-11 h-7 sm:w-12 sm:h-8 shrink-0 transition-transform duration-300 group-hover:scale-105" viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="lotusGoldHeader" x1="20" y1="15" x2="200" y2="115" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#D8BE8C" />
-              <stop offset="50%" stop-color="#B9935A" />
-              <stop offset="100%" stop-color="#9C7843" />
-            </linearGradient>
-          </defs>
-          <path d="M110 112 C86 86 86 44 110 16 C134 44 134 86 110 112 Z" stroke="url(#lotusGoldHeader)" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M110 110 L110 42" stroke="url(#lotusGoldHeader)" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M107 112 C74 102 52 72 56 36 C82 40 99 66 107 112 Z" stroke="url(#lotusGoldHeader)" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M113 112 C146 102 168 72 164 36 C138 40 121 66 113 112 Z" stroke="url(#lotusGoldHeader)" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M104 113 C64 120 28 106 14 78 C42 66 76 78 104 113 Z" stroke="url(#lotusGoldHeader)" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M116 113 C156 120 192 106 206 78 C178 66 144 78 116 113 Z" stroke="url(#lotusGoldHeader)" stroke-width="4" stroke-linejoin="round"/>
-        </svg>
-
-        <div class="truncate">
-          <span class="font-serif text-lg sm:text-2xl font-medium tracking-[0.08em] uppercase text-ink-900 block leading-tight truncate">
-            Maison de la Beauté
-          </span>
-          <span class="text-[11px] text-ink-500 block mt-0.5">
-            10h00 – 19h00 • 07 66 47 52 31
-          </span>
-        </div>
-      </a>
-
-      <button type="button" onclick="openBookingDrawer()" class="bg-ink-900 hover:bg-gold-600 text-alabaster text-xs uppercase tracking-[0.15em] font-medium px-5 sm:px-6 py-3.5 rounded-full transition-colors flex items-center gap-2.5 shrink-0 cursor-pointer">
-        <span>Réserver</span>
-        <span id="nav-count" class="hidden bg-gold-500 text-white text-[11px] font-semibold w-5 h-5 rounded-full items-center justify-center">0</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- ===================================================================== -->
-  <!-- SECTION D'ACCUEIL SPACIEUSE & CLAIRE                                   -->
-  <!-- ===================================================================== -->
-  <section class="py-20 sm:py-28 px-5 sm:px-8 border-b border-stone/80">
-    <div class="max-w-3xl mx-auto text-center space-y-7">
-      <div class="flex justify-center">
-        <svg class="w-16 h-11 sm:w-20 sm:h-12" viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="lotusGoldHero" x1="20" y1="15" x2="200" y2="115" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#D8BE8C" />
-              <stop offset="50%" stop-color="#B9935A" />
-              <stop offset="100%" stop-color="#9C7843" />
-            </linearGradient>
-          </defs>
-          <path d="M110 112 C86 86 86 44 110 16 C134 44 134 86 110 112 Z" stroke="url(#lotusGoldHero)" stroke-width="3.5" stroke-linejoin="round"/>
-          <path d="M110 110 L110 42" stroke="url(#lotusGoldHero)" stroke-width="2.2" stroke-linecap="round"/>
-          <path d="M107 112 C74 102 52 72 56 36 C82 40 99 66 107 112 Z" stroke="url(#lotusGoldHero)" stroke-width="3.5" stroke-linejoin="round"/>
-          <path d="M113 112 C146 102 168 72 164 36 C138 40 121 66 113 112 Z" stroke="url(#lotusGoldHero)" stroke-width="3.5" stroke-linejoin="round"/>
-          <path d="M104 113 C64 120 28 106 14 78 C42 66 76 78 104 113 Z" stroke="url(#lotusGoldHero)" stroke-width="3.5" stroke-linejoin="round"/>
-          <path d="M116 113 C156 120 192 106 206 78 C178 66 144 78 116 113 Z" stroke="url(#lotusGoldHero)" stroke-width="3.5" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <h1 class="font-serif text-4xl sm:text-6xl font-normal text-ink-900 leading-[1.12] tracking-tight">
-        L'art de l'onglerie,<br/>
-        <span class="italic text-gold-600">tout en élégance.</span>
-      </h1>
-
-      <p class="text-sm sm:text-base text-ink-700 max-w-xl mx-auto leading-relaxed">
-        Bienvenue chez <strong>Maison de la Beauté</strong> au Centre Commercial Les Quatre Tuiles, 95370 Montigny-lès-Cormeilles (en face d'Yves Rocher). Choisissez votre prestation et réservez votre créneau entre 10h00 et 19h00.
-      </p>
-
-      <div class="pt-2 flex flex-wrap items-center justify-center gap-3.5">
-        <a href="#tarifs" class="bg-ink-900 hover:bg-gold-600 text-alabaster text-xs uppercase tracking-[0.16em] font-medium px-8 py-4 rounded-full transition-colors">
-          Voir les tarifs
-        </a>
-        <a href="tel:0766475231" class="bg-white hover:bg-linen text-ink-900 border border-stone text-xs uppercase tracking-[0.16em] font-medium px-7 py-4 rounded-full transition-colors">
-          07 66 47 52 31
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- GRILLE TARIFAIRE INTERACTIVE & DYNAMIQUE                              -->
-  <!-- ===================================================================== -->
-  <section id="tarifs" class="py-20 sm:py-28 px-5 sm:px-8">
-    <div class="max-w-3xl mx-auto space-y-20">
-
-      <!-- Prestations -->
-      <div class="reveal-block">
-        <div class="text-center mb-10">
-          <span class="text-[11px] uppercase tracking-[0.26em] text-gold-600 font-semibold">Grille Tarifaire</span>
-          <h2 class="font-serif text-3xl sm:text-5xl font-normal text-ink-900 mt-2">
-            Nos Prestations
-          </h2>
-          <p class="text-xs sm:text-sm text-ink-500 mt-2">
-            Cliquez sur une ou plusieurs prestations pour composer votre rendez-vous
-          </p>
-        </div>
-
-        <div id="services-list" class="space-y-3.5">
-          <!-- Généré dynamiquement par renderCatalog() -->
-        </div>
-      </div>
-
-      <!-- Suppléments -->
-      <div class="reveal-block">
-        <div class="text-center mb-10">
-          <span class="text-[11px] uppercase tracking-[0.26em] text-gold-600 font-semibold">Suppléments</span>
-          <h3 class="font-serif text-3xl sm:text-4xl font-normal text-ink-900 mt-2">
-            Options & Finitions
-          </h3>
-        </div>
-
-        <div id="addons-list" class="grid sm:grid-cols-3 gap-4">
-          <!-- Généré dynamiquement par renderCatalog() -->
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- INFOS PRATIQUES, ADRESSE & CONTACT                                    -->
-  <!-- ===================================================================== -->
-  <section class="py-16 sm:py-20 px-5 sm:px-8 border-t border-stone/80 bg-linen/50">
-    <div class="max-w-4xl mx-auto grid sm:grid-cols-3 gap-6 text-center reveal-block">
-      <div class="p-6 rounded-2xl bg-white border border-stone space-y-1.5">
-        <p class="text-[10px] uppercase tracking-[0.22em] text-gold-600 font-semibold">Adresse</p>
-        <p class="font-serif text-xl font-medium text-ink-900">Centre Commercial Les Quatre Tuiles</p>
-        <p class="text-xs text-ink-700 leading-relaxed">95370 Montigny-lès-Cormeilles<br/>En face d'Yves Rocher</p>
-      </div>
-
-      <div class="p-6 rounded-2xl bg-white border border-stone space-y-1.5">
-        <p class="text-[10px] uppercase tracking-[0.22em] text-gold-600 font-semibold">Horaires</p>
-        <p class="font-serif text-xl font-medium text-ink-900">10h00 – 19h00</p>
-        <p class="text-xs text-ink-700 leading-relaxed">Lundi au Samedi<br/>Sur rendez-vous</p>
-      </div>
-
-      <div class="p-6 rounded-2xl bg-white border border-stone space-y-1.5">
-        <p class="text-[10px] uppercase tracking-[0.22em] text-gold-600 font-semibold">Téléphone & RDV</p>
-        <a href="tel:0766475231" class="font-serif text-2xl font-semibold text-ink-900 hover:text-gold-600 transition-colors block">
-          07 66 47 52 31
-        </a>
-        <p class="text-xs text-ink-700 leading-relaxed">Appel, SMS & WhatsApp<br/>Notification instantanée</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- PIED DE PAGE                                                          -->
-  <!-- ===================================================================== -->
-  <footer class="border-t border-stone py-14 px-5 sm:px-8 bg-alabaster pb-32 sm:pb-24">
-    <div class="max-w-3xl mx-auto text-center space-y-4">
-      <div class="flex justify-center">
-        <svg class="w-12 h-8" viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M110 112 C86 86 86 44 110 16 C134 44 134 86 110 112 Z" stroke="#B9935A" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M110 110 L110 42" stroke="#B9935A" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M107 112 C74 102 52 72 56 36 C82 40 99 66 107 112 Z" stroke="#B9935A" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M113 112 C146 102 168 72 164 36 C138 40 121 66 113 112 Z" stroke="#B9935A" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M104 113 C64 120 28 106 14 78 C42 66 76 78 104 113 Z" stroke="#B9935A" stroke-width="4" stroke-linejoin="round"/>
-          <path d="M116 113 C156 120 192 106 206 78 C178 66 144 78 116 113 Z" stroke="#B9935A" stroke-width="4" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <p class="font-serif text-2xl tracking-[0.1em] uppercase text-ink-900">
-        Maison de la Beauté
-      </p>
-      <p class="text-xs text-ink-500">
-        Centre Commercial Les Quatre Tuiles, 95370 Montigny-lès-Cormeilles (en face d'Yves Rocher) • 07 66 47 52 31
-      </p>
-
-      <div class="pt-2">
-        <button type="button" onclick="openAdminModal()" class="text-[11px] text-ink-500 hover:text-gold-600 underline underline-offset-4 cursor-pointer">
-          Espace Institut (Notifications & Réservations)
-        </button>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ===================================================================== -->
-  <!-- BARRE FLOTTANTE DE SÉLECTION                                          -->
-  <!-- ===================================================================== -->
-  <div id="floating-bar" class="fixed bottom-5 left-4 right-4 z-30 transform translate-y-32 transition-transform duration-500 pointer-events-none">
-    <div class="max-w-2xl mx-auto bg-ink-900 text-alabaster rounded-full px-5 py-3.5 shadow-xl flex items-center justify-between gap-4 pointer-events-auto">
-      <div class="min-w-0 pl-2">
-        <p class="text-xs sm:text-sm font-medium text-white truncate" id="bar-summary">Prestation sélectionnée</p>
-        <p class="text-xs text-gold-300" id="bar-total">Total estimé : 0 €</p>
-      </div>
-
-      <button type="button" onclick="openBookingDrawer()" class="bg-gold-500 hover:bg-gold-400 text-white text-xs uppercase tracking-[0.14em] font-medium px-5 py-3 rounded-full shrink-0 transition-colors cursor-pointer">
-        Réserver →
-      </button>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- TIROIR DE RÉSERVATION EN 3 ÉTAPES + CONFIRMATION                    -->
-  <!-- ===================================================================== -->
-  <div id="booking-drawer" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-    <div onclick="closeBookingDrawer()" class="fixed inset-0 bg-ink-900/45 backdrop-blur-xs"></div>
-
-    <div class="fixed inset-y-0 right-0 max-w-md w-full bg-alabaster shadow-2xl flex flex-col border-l border-stone">
-      <!-- En-tête du tiroir -->
-      <div class="px-6 py-5 bg-white border-b border-stone flex items-center justify-between">
-        <div>
-          <span class="text-[10px] uppercase tracking-[0.24em] text-gold-600 font-semibold">Maison de la Beauté</span>
-          <h3 id="drawer-title" class="font-serif text-2xl font-medium text-ink-900">Prendre rendez-vous</h3>
-        </div>
-        <button type="button" onclick="closeBookingDrawer()" aria-label="Fermer" class="w-9 h-9 rounded-full bg-alabaster hover:bg-linen text-ink-900 flex items-center justify-center cursor-pointer">
-          ✕
-        </button>
-      </div>
-
-      <!-- Indicateur d'étapes -->
-      <div class="px-6 py-3 bg-linen/70 border-b border-stone flex items-center justify-between text-xs">
-        <span id="ind-1" class="font-semibold text-ink-900">1. Soins</span>
-        <span class="text-stone">—</span>
-        <span id="ind-2" class="text-ink-500">2. Date & Heure</span>
-        <span class="text-stone">—</span>
-        <span id="ind-3" class="text-ink-500">3. Vos infos</span>
-      </div>
-
-      <!-- Contenu dynamique des étapes -->
-      <div class="flex-1 overflow-y-auto p-6 space-y-6">
-
-        <!-- ÉTAPE 1 : RÉCAPITULATIF DES SOINS -->
-        <div id="step-1" class="space-y-5">
-          <div class="flex items-center justify-between">
-            <h4 class="text-xs uppercase tracking-[0.16em] font-semibold text-ink-900">Votre sélection</h4>
-            <button type="button" onclick="closeBookingDrawer()" class="text-xs text-gold-600 hover:underline cursor-pointer">+ Modifier</button>
-          </div>
-          <div id="drawer-items" class="space-y-2.5"></div>
-        </div>
-
-        <!-- ÉTAPE 2 : CHOIX DU JOUR & CRÉNEAU (10H00 - 19H00) -->
-        <div id="step-2" class="hidden space-y-6">
-          <div>
-            <h4 class="text-xs uppercase tracking-[0.16em] font-semibold text-ink-900 mb-3">Choisissez un jour</h4>
-            <div id="calendar-grid" class="grid grid-cols-4 gap-2"></div>
-          </div>
-
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <h4 class="text-xs uppercase tracking-[0.16em] font-semibold text-ink-900">Choisissez une heure</h4>
-              <span class="text-[11px] text-ink-500">10h00 – 19h00</span>
-            </div>
-            <div id="slots-grid" class="grid grid-cols-3 gap-2"></div>
-          </div>
-        </div>
-
-        <!-- ÉTAPE 3 : COORDONNÉES CLIENTES (PRÉNOM, NOM, TÉLÉPHONE OBLIGATOIRES) -->
-        <div id="step-3" class="hidden space-y-5">
-          <div class="p-4 rounded-2xl bg-white border border-stone text-xs space-y-1">
-            <p class="font-semibold text-ink-900 text-sm" id="recap-when">Date et heure</p>
-            <p class="text-ink-700" id="recap-what">Prestations</p>
-            <p class="font-semibold text-gold-600 pt-1" id="recap-cost">Total estimé</p>
-          </div>
-
-          <form id="booking-form" onsubmit="handleConfirmBooking(event)" class="space-y-4">
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label for="input-firstname" class="block text-[11px] uppercase tracking-[0.14em] font-semibold text-ink-900 mb-1.5">Prénom *</label>
-                <input type="text" id="input-firstname" name="firstname" required placeholder="Camille" class="w-full px-4 py-3 rounded-xl bg-white border border-stone focus:border-gold-500 focus:outline-none text-sm" />
-              </div>
-              <div>
-                <label for="input-lastname" class="block text-[11px] uppercase tracking-[0.14em] font-semibold text-ink-900 mb-1.5">Nom *</label>
-                <input type="text" id="input-lastname" name="lastname" required placeholder="Laurent" class="w-full px-4 py-3 rounded-xl bg-white border border-stone focus:border-gold-500 focus:outline-none text-sm" />
-              </div>
-            </div>
-
-            <div>
-              <label for="input-phone" class="block text-[11px] uppercase tracking-[0.14em] font-semibold text-ink-900 mb-1.5">Numéro de téléphone *</label>
-              <input type="tel" id="input-phone" name="phone" required placeholder="06 12 34 56 78" class="w-full px-4 py-3 rounded-xl bg-white border border-stone focus:border-gold-500 focus:outline-none text-sm" />
-            </div>
-
-            <div>
-              <label for="input-note" class="block text-[11px] uppercase tracking-[0.14em] font-semibold text-ink-900 mb-1.5">Remarques / Idée nail art (optionnel)</label>
-              <input type="text" id="input-note" name="note" placeholder="Ex : Forme amande, teinte nude, dépose à prévoir..." class="w-full px-4 py-3 rounded-xl bg-white border border-stone focus:border-gold-500 focus:outline-none text-sm" />
-            </div>
-          </form>
-        </div>
-
-        <!-- ÉTAPE 4 : CONFIRMATION & ENVOI DIRECT DE NOTIFICATION -->
-        <div id="step-4" class="hidden text-center space-y-5 py-2">
-          <div class="w-12 h-12 rounded-full bg-ink-900 text-gold-300 flex items-center justify-center mx-auto text-lg font-semibold">
-            ✓
-          </div>
-
-          <div>
-            <h4 class="font-serif text-3xl font-medium text-ink-900">Demande enregistrée</h4>
-            <p class="text-xs sm:text-sm text-ink-700 mt-1.5 leading-relaxed">
-              Envoyez maintenant la notification à l'institut (<strong>07 66 47 52 31</strong>) ou copiez le récapitulatif.
-            </p>
-          </div>
-
-          <div id="ticket-summary" class="p-4 rounded-2xl bg-white border border-stone text-left text-xs space-y-1.5"></div>
-
-          <div class="space-y-2.5 pt-1">
-            <a id="whatsapp-notify-link" href="#" target="_blank" rel="noopener noreferrer" class="block w-full py-3.5 px-5 rounded-full bg-ink-900 hover:bg-gold-600 text-white text-xs uppercase tracking-[0.14em] font-medium transition-colors">
-              Envoyer la notification WhatsApp →
-            </a>
-
-            <button type="button" onclick="copySummaryText()" class="w-full py-3 px-5 rounded-full bg-white hover:bg-linen text-ink-900 border border-stone text-xs uppercase tracking-[0.14em] font-medium transition-colors cursor-pointer">
-              Copier le récapitulatif
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Pied du tiroir -->
-      <div id="drawer-bottom" class="p-5 bg-white border-t border-stone space-y-3">
-        <div class="flex items-center justify-between">
-          <span class="text-xs text-ink-500">Durée estimée : <strong id="drawer-time" class="text-ink-900">0 min</strong></span>
-          <span class="font-serif text-2xl font-semibold text-ink-900" id="drawer-price">0 €</span>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <button type="button" id="btn-back" onclick="prevBookingStep()" class="hidden px-4 py-3.5 rounded-full border border-stone text-xs font-medium text-ink-900 hover:bg-linen cursor-pointer">
-            ← Retour
-          </button>
-          <button type="button" id="btn-forward" onclick="nextBookingStep()" class="flex-1 bg-ink-900 hover:bg-gold-600 text-white text-xs uppercase tracking-[0.14em] font-medium py-3.5 px-6 rounded-full transition-colors cursor-pointer">
-            Choisir la date →
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- PANNEAU ESPACE INSTITUT (NOTIFICATIONS & HISTORIQUE LOCAL)          -->
-  <!-- ===================================================================== -->
-  <div id="admin-modal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="admin-title">
-    <div onclick="closeAdminModal()" class="fixed inset-0 bg-ink-900/50 backdrop-blur-xs"></div>
-    <div class="fixed inset-4 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 max-w-lg w-full bg-alabaster rounded-3xl border border-stone shadow-2xl p-6 sm:p-8 flex flex-col max-h-[85vh]">
-      <div class="flex items-center justify-between pb-4 border-b border-stone">
-        <div>
-          <span class="text-[10px] uppercase tracking-[0.22em] text-gold-600 font-semibold">Maison de la Beauté</span>
-          <h3 id="admin-title" class="font-serif text-2xl font-medium text-ink-900">Notifications & Réservations</h3>
-        </div>
-        <button type="button" onclick="closeAdminModal()" aria-label="Fermer" class="w-8 h-8 rounded-full bg-white border border-stone flex items-center justify-center text-xs cursor-pointer">✕</button>
-      </div>
-
-      <div class="overflow-y-auto py-5 space-y-5 flex-1">
-        <div class="p-4 rounded-2xl bg-white border border-stone space-y-3">
-          <p class="text-xs font-semibold text-ink-900 uppercase tracking-wider">Réception des notifications</p>
-          <p class="text-xs text-ink-700 leading-relaxed">
-            Numéro WhatsApp actif par défaut : <strong>07 66 47 52 31</strong> (<code>33766475231</code>). Vous pouvez personnaliser le numéro ou ajouter un e-mail de notification :
-          </p>
-          <div class="grid sm:grid-cols-2 gap-2.5">
-            <input type="text" id="salon-wa-input" placeholder="33766475231" class="px-3.5 py-2.5 rounded-xl bg-alabaster border border-stone text-xs" />
-            <input type="email" id="salon-email-input" placeholder="votre-email@exemple.fr" class="px-3.5 py-2.5 rounded-xl bg-alabaster border border-stone text-xs" />
-          </div>
-          <button type="button" onclick="saveSalonSettings()" class="w-full py-2.5 rounded-full bg-ink-900 hover:bg-gold-600 text-white text-xs font-medium transition-colors cursor-pointer">
-            Enregistrer les coordonnées
-          </button>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-2.5">
-            <p class="text-xs font-semibold text-ink-900 uppercase tracking-wider">Réservations enregistrées</p>
-            <button type="button" onclick="clearBookingsHistory()" class="text-[11px] text-ink-500 hover:underline cursor-pointer">Effacer</button>
-          </div>
-          <div id="admin-bookings-list" class="space-y-2.5 text-xs"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Notification toast discrète -->
-  <div id="toast" class="fixed top-28 right-4 z-50 transform translate-x-full transition-transform duration-300 pointer-events-none">
-    <div id="toast-text" class="bg-ink-900 text-alabaster text-xs px-5 py-3 rounded-full shadow-lg">
-      Sélection mise à jour
-    </div>
-  </div>
-
-  <!-- ===================================================================== -->
-  <!-- LOGIQUE APPLICATIVE                                                   -->
-  <!-- ===================================================================== -->
-  <script>
-    // Numéro WhatsApp de l'institut dérivé du 07 66 47 52 31 au format international
-    const DEFAULT_SALON_WHATSAPP = '33766475231';
-    const DEFAULT_SALON_EMAIL = '';
-
-    // Grille tarifaire officielle de Maison de la Beauté
-    const SERVICES = [
-      { id: 'gainage', name: 'Gainage sur ongle naturel', price: 30, priceLabel: '30 €', duration: 45 },
-      { id: 'capsule-gel', name: 'Pose capsule + gel', price: 35, priceLabel: '35 €', duration: 60 },
-      { id: 'capsule-gel-sp', name: 'Pose capsule + gel + semi-permanent', price: 45, priceLabel: '45 €', duration: 75 },
-      { id: 'remplissage', name: 'Remplissage gel', price: 35, priceLabel: '35 €', duration: 60 },
-      { id: 'semi-perm', name: 'Vernis semi-permanent', price: 25, priceLabel: '25 €', duration: 35 },
-      { id: 'depose', name: 'Dépose', price: 15, priceLabel: '15 €', duration: 25 },
-      { id: 'depose-pose', name: 'Dépose + nouvelle pose', price: null, isQuote: true, priceLabel: 'Sur devis', duration: 90 }
-    ];
-
-    const ADDONS = [
-      { id: 'chrome', name: 'Chrome', price: 5, priceLabel: '+ 5 €', duration: 10 },
-      { id: 'strass', name: 'Strass bijoux', price: 2, priceLabel: '+ 2 €', duration: 10 },
-      { id: 'nail-art', name: 'Nail art', price: null, isQuote: true, priceLabel: 'Sur devis', duration: 20 }
-    ];
-
-    let cart = [];
-    let currentStep = 1;
-    let chosenDate = null;
-    let chosenTime = null;
-
-    // Initialisation au chargement de la page
-    document.addEventListener('DOMContentLoaded', () => {
-      try {
-        // Écran d'introduction court (~1,8s) puis glissement fluide vers le bas
-        const splash = document.getElementById('splash-screen');
-        setTimeout(() => {
-          if (splash) {
-            splash.classList.add('slide-down-out');
-            setTimeout(() => splash.remove(), 750);
-          }
-        }, 1800);
-
-        renderCatalog();
-        buildCalendar();
-        initScrollReveal();
-      } catch (err) {
-        console.error("Erreur d'initialisation :", err);
-      }
-    });
-
-    function showToast(message) {
-      const el = document.getElementById('toast');
-      const textEl = document.getElementById('toast-text');
-      if (!el || !textEl) return;
-      textEl.textContent = message;
-      el.classList.remove('translate-x-full');
-      clearTimeout(window.toastTimeout);
-      window.toastTimeout = setTimeout(() => {
-        el.classList.add('translate-x-full');
-      }, 2200);
+    .service-name {
+      font-size: 1.02rem;
+      font-weight: 600;
     }
 
-    // Affichage dynamique des prestations et suppléments
-    function renderCatalog() {
-      const servicesEl = document.getElementById('services-list');
-      if (servicesEl) {
-        servicesEl.innerHTML = SERVICES.map(service => {
-          const isSelected = cart.some(item => item.id === service.id);
-          return `
-            <div onclick="toggleCartItem('${service.id}', 'service')"
-                 role="button"
-                 tabindex="0"
-                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCartItem('${service.id}','service');}"
-                 class="care-card ${isSelected ? 'is-selected' : ''} rounded-2xl px-6 py-5 flex items-center justify-between gap-4 cursor-pointer">
-              <div class="min-w-0">
-                <h4 class="font-serif text-xl sm:text-2xl font-medium text-ink-900">${service.name}</h4>
-                <span class="text-xs text-ink-500">${service.duration} min</span>
-              </div>
-              <div class="flex items-center gap-4 shrink-0">
-                <span class="font-serif text-xl sm:text-2xl font-semibold ${service.isQuote ? 'text-gold-600' : 'text-ink-900'}">
-                  ${service.priceLabel}
-                </span>
-                <span class="w-8 h-8 rounded-full flex items-center justify-center text-xs transition-colors ${
-                  isSelected ? 'bg-ink-900 text-white' : 'bg-alabaster text-ink-900 border border-stone'
-                }">
-                  ${isSelected ? '✓' : '+'}
-                </span>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      const addonsEl = document.getElementById('addons-list');
-      if (addonsEl) {
-        addonsEl.innerHTML = ADDONS.map(addon => {
-          const isSelected = cart.some(item => item.id === addon.id);
-          return `
-            <div onclick="toggleCartItem('${addon.id}', 'addon')"
-                 role="button"
-                 tabindex="0"
-                 onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCartItem('${addon.id}','addon');}"
-                 class="care-card ${isSelected ? 'is-selected' : ''} rounded-2xl p-5 flex flex-col justify-between cursor-pointer">
-              <div class="flex items-center justify-between gap-2 mb-3">
-                <span class="font-serif text-xl font-medium text-ink-900">${addon.name}</span>
-                <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs shrink-0 ${
-                  isSelected ? 'bg-ink-900 text-white' : 'bg-alabaster text-ink-900 border border-stone'
-                }">
-                  ${isSelected ? '✓' : '+'}
-                </span>
-              </div>
-              <div class="flex items-center justify-between pt-2.5 border-t border-stone/70">
-                <span class="text-[11px] text-ink-500">+ ${addon.duration} min</span>
-                <span class="font-serif text-lg font-semibold ${addon.isQuote ? 'text-gold-600' : 'text-ink-900'}">
-                  ${addon.priceLabel}
-                </span>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
+    .service-meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 3px;
     }
 
-    function toggleCartItem(id, kind) {
-      const sourceList = kind === 'service' ? SERVICES : ADDONS;
-      const item = sourceList.find(entry => entry.id === id);
-      if (!item) return;
-
-      const existingIndex = cart.findIndex(entry => entry.id === id);
-      if (existingIndex > -1) {
-        cart.splice(existingIndex, 1);
-        showToast(`${item.name} retiré`);
-      } else {
-        cart.push({ ...item, kind });
-        showToast(`${item.name} ajouté`);
-      }
-
-      renderCatalog();
-      refreshCartUI();
+    .service-price {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--gold-dark);
+      white-space: nowrap;
     }
 
-    function getCartTotals() {
-      let totalAmount = 0;
-      let hasQuote = false;
-      let totalMinutes = 0;
-
-      cart.forEach(item => {
-        if (typeof item.price === 'number') totalAmount += item.price;
-        if (item.isQuote) hasQuote = true;
-        totalMinutes += item.duration || 0;
-      });
-
-      let priceStr = `${totalAmount} €`;
-      if (hasQuote && totalAmount > 0) priceStr = `${totalAmount} € + sur devis`;
-      if (hasQuote && totalAmount === 0) priceStr = 'Sur devis';
-
-      const hours = Math.floor(totalMinutes / 60);
-      const minutes = totalMinutes % 60;
-      const timeStr = hours > 0
-        ? `${hours}h${minutes > 0 ? String(minutes).padStart(2, '0') : '00'}`
-        : `${minutes} min`;
-
-      return { totalAmount, hasQuote, priceStr, timeStr };
+    .extras-box {
+      margin-top: 24px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
     }
 
-    function refreshCartUI() {
-      const floatingBar = document.getElementById('floating-bar');
-      const badge = document.getElementById('nav-count');
-      const { priceStr } = getCartTotals();
-
-      if (cart.length > 0) {
-        floatingBar.classList.remove('translate-y-32');
-        badge.classList.remove('hidden');
-        badge.classList.add('flex');
-        badge.textContent = cart.length;
-        document.getElementById('bar-summary').textContent = cart.map(i => i.name).join(' + ');
-        document.getElementById('bar-total').textContent = `Total estimé : ${priceStr}`;
-      } else {
-        floatingBar.classList.add('translate-y-32');
-        badge.classList.add('hidden');
-        badge.classList.remove('flex');
-      }
-
-      renderDrawerItems();
+    .extras-title {
+      font-size: 1.25rem;
+      margin-bottom: 14px;
     }
 
-    // Gestion du tiroir de réservation
-    function openBookingDrawer() {
-      document.getElementById('booking-drawer').classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      setBookingStep(1);
+    .extras-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
-    function closeBookingDrawer() {
-      document.getElementById('booking-drawer').classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    function renderDrawerItems() {
-      const container = document.getElementById('drawer-items');
-      const { priceStr, timeStr } = getCartTotals();
-      document.getElementById('drawer-price').textContent = priceStr;
-      document.getElementById('drawer-time').textContent = timeStr;
-
-      if (!container) return;
-      if (cart.length === 0) {
-        container.innerHTML = `<p class="text-xs text-ink-500 p-4 rounded-2xl bg-white border border-dashed border-stone text-center">Sélectionnez une prestation sur la carte tarifaire pour continuer.</p>`;
-        return;
-      }
-
-      container.innerHTML = cart.map(item => `
-        <div class="p-3.5 rounded-2xl bg-white border border-stone flex items-center justify-between gap-3">
-          <div>
-            <p class="text-sm font-medium text-ink-900">${item.name}</p>
-            <p class="text-xs text-ink-500">${item.priceLabel} • ${item.duration} min</p>
-          </div>
-          <button type="button" onclick="toggleCartItem('${item.id}', '${item.kind}')" aria-label="Retirer ${item.name}" class="w-7 h-7 rounded-full bg-alabaster hover:bg-linen text-xs flex items-center justify-center cursor-pointer">
-            ✕
-          </button>
-        </div>
-      `).join('');
-    }
-
-    // Génération des jours et des créneaux horaires (10h00 - 19h00)
-    function buildCalendar() {
-      const grid = document.getElementById('calendar-grid');
-      if (!grid) return;
-      const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-      const months = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
-      let html = '';
-      let added = 0;
-      let offset = 1;
-
-      while (added < 8) {
-        const dateObj = new Date();
-        dateObj.setDate(dateObj.getDate() + offset++);
-        if (dateObj.getDay() === 0) continue; // Dimanche fermé
-
-        const label = `${days[dateObj.getDay()]} ${dateObj.getDate()} ${months[dateObj.getMonth()]}`;
-        if (!chosenDate && added === 0) chosenDate = label;
-        const isSelected = chosenDate === label;
-
-        html += `
-          <button type="button" onclick="pickDate('${label}', this)"
-                  class="cal-btn p-2.5 rounded-xl border text-center cursor-pointer transition-colors ${
-                    isSelected ? 'bg-ink-900 text-white border-ink-900' : 'bg-white text-ink-900 border-stone hover:border-gold-500'
-                  }">
-            <span class="block text-[10px] uppercase opacity-75">${days[dateObj.getDay()]}</span>
-            <span class="block font-serif text-base font-semibold">${dateObj.getDate()}</span>
-            <span class="block text-[10px] opacity-75">${months[dateObj.getMonth()]}</span>
-          </button>
-        `;
-        added++;
-      }
-
-      grid.innerHTML = html;
-      buildSlots();
-    }
-
-    function pickDate(label, btn) {
-      chosenDate = label;
-      document.querySelectorAll('.cal-btn').forEach(b => {
-        b.className = 'cal-btn p-2.5 rounded-xl border text-center cursor-pointer transition-colors bg-white text-ink-900 border-stone hover:border-gold-500';
-      });
-      if (btn) {
-        btn.className = 'cal-btn p-2.5 rounded-xl border text-center cursor-pointer transition-colors bg-ink-900 text-white border-ink-900';
-      }
-    }
-
-    function buildSlots() {
-      const grid = document.getElementById('slots-grid');
-      if (!grid) return;
-      const hours = ['10:00', '11:00', '12:00', '13:30', '14:30', '15:30', '16:30', '17:30', '18:00'];
-      if (!chosenTime) chosenTime = '10:00';
-
-      grid.innerHTML = hours.map(slot => `
-        <button type="button" onclick="pickTime('${slot}')"
-                class="py-2.5 rounded-xl text-xs font-medium border cursor-pointer transition-colors ${
-                  chosenTime === slot ? 'bg-gold-500 text-white border-gold-500' : 'bg-white text-ink-900 border-stone hover:bg-linen'
-                }">
-          ${slot}
-        </button>
-      `).join('');
-    }
-
-    function pickTime(slot) {
-      chosenTime = slot;
-      buildSlots();
-    }
-
-    function setBookingStep(stepNumber) {
-      currentStep = stepNumber;
-      [1, 2, 3, 4].forEach(n => {
-        document.getElementById(`step-${n}`).classList.add('hidden');
-      });
-      document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
-
-      [1, 2, 3].forEach(n => {
-        const indicator = document.getElementById(`ind-${n}`);
-        indicator.className = n <= stepNumber ? 'font-semibold text-ink-900' : 'text-ink-500';
-      });
-
-      const backBtn = document.getElementById('btn-back');
-      const forwardBtn = document.getElementById('btn-forward');
-      const bottomBar = document.getElementById('drawer-bottom');
-
-      if (stepNumber === 1) {
-        bottomBar.classList.remove('hidden');
-        backBtn.classList.add('hidden');
-        forwardBtn.textContent = 'Choisir la date →';
-        renderDrawerItems();
-      } else if (stepNumber === 2) {
-        bottomBar.classList.remove('hidden');
-        backBtn.classList.remove('hidden');
-        forwardBtn.textContent = 'Vos coordonnées →';
-      } else if (stepNumber === 3) {
-        bottomBar.classList.remove('hidden');
-        backBtn.classList.remove('hidden');
-        forwardBtn.textContent = 'Valider la réservation';
-        const { priceStr, timeStr } = getCartTotals();
-        document.getElementById('recap-when').textContent = `${chosenDate} à ${chosenTime} (${timeStr})`;
-        document.getElementById('recap-what').textContent = cart.map(i => i.name).join(' + ');
-        document.getElementById('recap-cost').textContent = `Total estimé : ${priceStr}`;
-      } else if (stepNumber === 4) {
-        bottomBar.classList.add('hidden');
-      }
-    }
-
-    function nextBookingStep() {
-      if (currentStep === 1) {
-        if (cart.length === 0) {
-          showToast('Veuillez sélectionner au moins une prestation');
-          return;
-        }
-        setBookingStep(2);
-      } else if (currentStep === 2) {
-        setBookingStep(3);
-      } else if (currentStep === 3) {
-        const form = document.getElementById('booking-form');
-        if (form) form.requestSubmit();
-      }
-    }
-
-    function prevBookingStep() {
-      if (currentStep > 1) {
-        setBookingStep(currentStep - 1);
-      }
-    }
-
-    // Validation du formulaire client et génération/envoi de notification
-    function handleConfirmBooking(event) {
-      event.preventDefault();
-
-      const firstName = document.getElementById('input-firstname').value.trim();
-      const lastName = document.getElementById('input-lastname').value.trim();
-      const phone = document.getElementById('input-phone').value.trim();
-      const note = document.getElementById('input-note').value.trim();
-
-      if (!firstName || !lastName || !phone) {
-        showToast('Merci de renseigner Prénom, Nom et Téléphone');
-        return;
-      }
-
-      const { priceStr, timeStr } = getCartTotals();
-      const servicesText = cart.map(i => i.name).join(' + ');
-
-      const bookingEntry = {
-        id: Date.now(),
-        firstName,
-        lastName,
-        phone,
-        note,
-        date: chosenDate,
-        time: chosenTime,
-        services: servicesText,
-        total: priceStr,
-        createdAt: new Date().toLocaleString('fr-FR')
-      };
-
-      try {
-        const saved = JSON.parse(localStorage.getItem('mdb_bookings') || '[]');
-        saved.unshift(bookingEntry);
-        localStorage.setItem('mdb_bookings', JSON.stringify(saved));
-      } catch (storageErr) {
-        console.warn("Stockage local indisponible :", storageErr);
-      }
-
-      const formattedNotification =
-        `NOUVELLE RÉSERVATION — MAISON DE LA BEAUTÉ\n` +
-        `Cliente : ${firstName} ${lastName}\n` +
-        `Téléphone : ${phone}\n` +
-        `Date : ${chosenDate} à ${chosenTime} (${timeStr})\n` +
-        `Prestations : ${servicesText}\n` +
-        `Total estimé : ${priceStr}\n` +
-        `Lieu : CC Les Quatre Tuiles, 95370 Montigny-lès-Cormeilles` +
-        (note ? `\nRemarque : ${note}` : '');
-
-      window.lastBookingSummary = formattedNotification;
-
-      const salonWa = (localStorage.getItem('mdb_salon_wa') || DEFAULT_SALON_WHATSAPP).replace(/\D/g, '');
-      const waUrl = `https://wa.me/${salonWa}?text=${encodeURIComponent(formattedNotification)}`;
-      document.getElementById('whatsapp-notify-link').href = waUrl;
-
-      const salonEmail = (localStorage.getItem('mdb_salon_email') || DEFAULT_SALON_EMAIL).trim();
-      if (salonEmail) {
-        fetch(`https://formsubmit.co/ajax/${encodeURIComponent(salonEmail)}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            _subject: `Nouveau RDV Maison de la Beauté : ${firstName} ${lastName} (${chosenDate} ${chosenTime})`,
-            Cliente: `${firstName} ${lastName}`,
-            Telephone: phone,
-            Creneau: `${chosenDate} à ${chosenTime}`,
-            Prestations: servicesText,
-            Total: priceStr,
-            Remarque: note || 'Aucune'
-          })
-        }).catch(() => {});
-      }
-
-      document.getElementById('ticket-summary').innerHTML = `
-        <p><strong class="text-ink-900">Cliente :</strong> ${firstName} ${lastName}</p>
-        <p><strong class="text-ink-900">Téléphone :</strong> ${phone}</p>
-        <p><strong class="text-ink-900">Rendez-vous :</strong> ${chosenDate} à ${chosenTime}</p>
-        <p><strong class="text-ink-900">Prestation(s) :</strong> ${servicesText}</p>
-        <p class="font-semibold text-gold-600 pt-1">Total estimé : ${priceStr}</p>
-      `;
-
-      setBookingStep(4);
-
-      if (salonWa) {
-        window.open(waUrl, '_blank', 'noopener,noreferrer');
-      }
-    }
-
-    function copySummaryText() {
-      const textToCopy = window.lastBookingSummary || '';
-      if (!textToCopy) return;
-      const tempTextarea = document.createElement('textarea');
-      tempTextarea.value = textToCopy;
-      tempTextarea.setAttribute('readonly', '');
-      tempTextarea.style.position = 'absolute';
-      tempTextarea.style.left = '-9999px';
-      document.body.appendChild(tempTextarea);
-      tempTextarea.select();
-      try {
-        document.execCommand('copy');
-        showToast('Récapitulatif copié');
-      } catch (copyErr) {
-        showToast('Impossible de copier automatiquement');
-      }
-      document.body.removeChild(tempTextarea);
-    }
-
-    // Espace Institut : réglage des coordonnées de notification et historique
-    function openAdminModal() {
-      document.getElementById('salon-wa-input').value = localStorage.getItem('mdb_salon_wa') || DEFAULT_SALON_WHATSAPP;
-      document.getElementById('salon-email-input').value = localStorage.getItem('mdb_salon_email') || DEFAULT_SALON_EMAIL;
-      renderAdminBookings();
-      document.getElementById('admin-modal').classList.remove('hidden');
-    }
-
-    function closeAdminModal() {
-      document.getElementById('admin-modal').classList.add('hidden');
-    }
-
-    function saveSalonSettings() {
-      const wa = document.getElementById('salon-wa-input').value.trim();
-      const email = document.getElementById('salon-email-input').value.trim();
-      localStorage.setItem('mdb_salon_wa', wa);
-      localStorage.setItem('mdb_salon_email', email);
-      showToast('Paramètres enregistrés');
-    }
-
-    function renderAdminBookings() {
-      const container = document.getElementById('admin-bookings-list');
-      if (!container) return;
-      const bookings = JSON.parse(localStorage.getItem('mdb_bookings') || '[]');
-      if (bookings.length === 0) {
-        container.innerHTML = `<p class="text-ink-500 p-4 bg-white rounded-2xl border border-stone text-center">Aucune réservation enregistrée pour le moment.</p>`;
-        return;
-      }
-      container.innerHTML = bookings.map(b => `
-        <div class="p-3.5 rounded-2xl bg-white border border-stone space-y-1">
-          <div class="flex items-center justify-between gap-2 font-semibold text-ink-900">
-            <span>${b.firstName} ${b.lastName} — ${b.phone}</span>
-            <span class="text-gold-600">${b.total}</span>
-          </div>
-          <p class="text-ink-700">${b.date} à ${b.time} • ${b.services}</p>
-          ${b.note ? `<p class="text-ink-500 italic">Note : ${b.note}</p>` : ''}
-        </div>
-      `).join('');
-    }
-
-    function clearBookingsHistory() {
-      localStorage.removeItem('mdb_bookings');
-      renderAdminBookings();
-      showToast('Historique effacé');
-    }
-
-    // Observation de l'apparition des sections au défilement
-    function initScrollReveal() {
-      const blocks = document.querySelectorAll('.reveal-block');
-      if (!('IntersectionObserver' in window)) {
-        blocks.forEach(el => el.classList.add('is-visible'));
-        return;
-      }
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1 });
-
-      blocks.forEach(el => observer.observe(el));
-    }
-  </script>
-</body>
-</html>
+    .extra-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 16px;
+      display: inline-flex;
+      align-items:
