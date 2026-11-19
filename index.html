@@ -14,6 +14,19 @@ html{scroll-behavior:smooth}
 body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
 h1,h2,h3,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:500}
 .container{width:min(1080px,92vw);margin:0 auto}
+
+/* Animation d'ouverture (~2,5s) avec logo Maison de la Beauté */
+#introSplash{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none;animation:introFadeOut .55s cubic-bezier(.22,1,.36,1) 2.05s forwards}
+#introSplash.hide{display:none}
+.intro-logo{width:96px;height:80px;animation:introLogoPop .95s cubic-bezier(.22,1,.36,1) both,introPulse 1.3s ease-in-out .85s 1}
+.intro-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:2.1rem;font-weight:600;color:var(--ink);opacity:0;animation:introTitleIn .85s ease .22s forwards}
+.intro-line{width:0;height:1.5px;background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:introLineExpand .9s ease .45s forwards}
+@keyframes introLogoPop{from{opacity:0;transform:scale(.82) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes introPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes introTitleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes introLineExpand{from{width:0;opacity:0}to{width:140px;opacity:1}}
+@keyframes introFadeOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-18px)}}
+
 header{position:sticky;top:0;z-index:100;background:rgba(250,248,245,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
 .header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:70px}
 .brand-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:600;line-height:1.1}
@@ -76,6 +89,26 @@ footer a{color:var(--gold-l);text-decoration:none}
 </style>
 </head>
 <body>
+<div id="introSplash" aria-hidden="true">
+  <svg class="intro-logo" viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="introGoldGrad" x1="15" y1="10" x2="105" y2="90" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#E2C799" />
+        <stop offset="50%" stop-color="#BA9254" />
+        <stop offset="100%" stop-color="#8C6730" />
+      </linearGradient>
+    </defs>
+    <path d="M60 16C52 30 48 48 53 72C57 54 60 36 60 16Z" stroke="url(#introGoldGrad)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M60 16C68 30 72 48 67 72C63 54 60 36 60 16Z" stroke="url(#introGoldGrad)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M34 32C27 46 31 63 49 75C41 58 37 44 34 32Z" stroke="url(#introGoldGrad)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M86 32C93 46 89 63 71 75C79 58 83 44 86 32Z" stroke="url(#introGoldGrad)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M14 54C16 69 31 79 56 80C38 72 24 63 14 54Z" stroke="url(#introGoldGrad)" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M106 54C104 69 89 79 64 80C82 72 96 63 106 54Z" stroke="url(#introGoldGrad)" stroke-width="2.6" stroke-linejoin="round"/>
+  </svg>
+  <div class="intro-title">Maison de la Beauté</div>
+  <div class="intro-line"></div>
+</div>
+
 <header>
   <div class="container header-inner">
     <div>
@@ -156,6 +189,14 @@ footer a{color:var(--gold-l);text-decoration:none}
 
 <script>
 (function () {
+  var intro = document.getElementById('introSplash');
+  if (intro) {
+    intro.addEventListener('animationend', function (ev) {
+      if (ev.animationName === 'introFadeOut') intro.classList.add('hide');
+    });
+    setTimeout(function () { intro.classList.add('hide'); }, 2700);
+  }
+
   var ACCESS_KEY = '634d5a00-6ae8-4050-920d-9922bf9d548b';
   var SALON_WHATSAPP = '33766475231';
 
